@@ -47,6 +47,13 @@ def heartbeat():
 
     start = time.time()
     www = 0
+    yourheartbeat = []
+    text5 = tk.Label(window,
+                     text="                                       ")
+    text5.place(x=190, y=125)
+    text6 = tk.Label(
+        window, text="                                                                                         ")
+    text6.place(x=80, y=150)
     while (www < 3):
 
         y_value = []
@@ -103,19 +110,42 @@ def heartbeat():
     # print(f)
         print("Heart Beat: "),
         print(f[np.argmax(ff2[xxx:int(len(f)/2)])+xxx]*60)
+
+        yourheartbeat.append(f[np.argmax(ff2[xxx:int(len(f)/2)])+xxx]*60)
+
         www += 1
+    text5 = tk.Label(window,
+                     text=int(np.mean(yourheartbeat)), fg="green")
+    text5.place(x=190, y=125)
+    for i in yourheartbeat:
+        if(i > 200 or i < 50):
+            text6 = tk.Label(
+                window, text="your result may be wrong,please start again", fg="red")
+            text6.place(x=80, y=150)
+    for i in range(1):
+        dif = abs(yourheartbeat[i+1]-yourheartbeat[i])
+        if(dif > 15):
+            text6 = tk.Label(
+                window, text="your result may be wrong,please start again", fg="red")
+            text6.place(x=80, y=150)
 
 
 window = Tk()
-top_frame = tk.Frame(window)
-top_frame.pack()
-bottom_frame = tk.Frame(window)
-bottom_frame.pack(side=tk.BOTTOM)
 window.title("heartbeat")
 window.geometry("400x300")  # 注意是string，而不是數字
-
 window.resizable(0, 0)  # 不可以更改大⼩
-btn1 = tk.Button(top_frame, text='start', fg='black', comman=heartbeat)
-btn1.pack(side=tk.LEFT)
+
+text1 = tk.Label(window, text="Step 1 :  Put your finger in sensor")
+text2 = tk.Label(
+    window, text="(Don't move before end, result may be wrong )", fg='red')
+text3 = tk.Label(window, text="Step 2 : Press start")
+text4 = tk.Label(window, text="your  heartbeat")
+btn1 = tk.Button(window, text='start', fg='black', comman=heartbeat)
+
+text1.pack(side=TOP)
+text2.pack(side=TOP)
+text3.pack(side=TOP)
+btn1.pack(side=TOP)
+text4.place(x=150, y=100)
 
 window.mainloop()
